@@ -60,7 +60,6 @@ int TotalFreeSpace(int8_t* disk){
 }
 
 
-
 void CreateFile(int8_t* disk){
 	char name[2];
 	int start,size,back_size=0,temp_size=0, temp_index=0 ;
@@ -109,20 +108,52 @@ void CreateFile(int8_t* disk){
 
 
 
+void displaydisk(int8_t* disk){
+
+    if (TotalFreeSpace(disk) > DISK_SIZE) {
+        for (int i = 0; i < DISK_SIZE; i++) {
+            if (disk[i] == 1) {
+                for (int j = 0; j < TABLE_HEAD; j++) {
+                    if (Table[j].start <= i && i < Table[j].start + Table[j].size) {
+                        printf("%s ", Table[j].name);
+                        break;
+                    }
+                }
+            } else {
+                printf("## ");
+            }
+            if (i % 10 == 9) {
+                printf("\n");
+            }
+        }
+    } else {
+        for (int i = 0; i < DISK_SIZE; i++) {
+            printf("## ");
+            if (i % 10 == 9) {
+                printf("\n");
+            }
+        }
+    }
+	
+}
+
+
 int main(){
 	int8_t* disk;
 	int index = 0;
 	disk = CreateDisk();
 	
-	printf("aaaa");
-	while (disk[index])
-	{
-		printf("%d",disk[index]);
-		index ++;
-	}
+	CreateFile(disk);
+
+	printf("%d",Table[TABLE_HEAD-1].size);
+	displaydisk(disk);
+	// while (disk[index])
+	// {
+	// 	index ++;
+	// }
 	
 
-	CreateFile(disk);
+	// CreateFile(disk);
 
 	printf("done");
 }
